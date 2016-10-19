@@ -17,8 +17,8 @@ module.exports.models = {
   * connections (see `config/connections.js`)                                *
   *                                                                          *
   ***************************************************************************/
-  connection: 'wvrMysqlServer',
-  // connection: 'wvrMongodbServer',
+  // connection: 'wvrMysqlServer',
+  connection: 'wvrMongodbServer',
 
   /***************************************************************************
   *                                                                          *
