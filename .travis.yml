@@ -5,5 +5,9 @@ node_js:
 services:
   - mongodb
 
+install:
+  - npm install
+  - npm update
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)

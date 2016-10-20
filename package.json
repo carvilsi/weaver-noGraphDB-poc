@@ -31,7 +31,7 @@
   "scripts": {
     "start": "node app.js",
     "debug": "node debug app.js",
-    "test": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js  && istanbul cover _mocha test/bootstrap.test.js test/**/*.js -x '**/api/policies/**' -x '**/api/responses/**'  && istanbul report html"
+    "test": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js  && istanbul cover _mocha test/bootstrap.test.js test/**/*.js -x '**/api/policies/**' -x '**/api/responses/**' -x '**/config/**'  && istanbul report html"
   },
   "main": "app.js",
   "repository": {

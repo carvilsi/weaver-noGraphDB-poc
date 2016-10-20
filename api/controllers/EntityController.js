@@ -61,7 +61,6 @@ module.exports = {
 											if (err) {
 												res.json(400);
 											} else {
-												console.log(newEntity);
 												res.json(200,newEntity);
 											}
 										});
@@ -188,15 +187,29 @@ delete: function(req, res) {
 		return res.badRequest();
 	}
 	var ent = req.allParams();
-	Entity.destroy({
-		idw : ent.id
-	})
-	.exec(function (err){
-  if (err) {
-    res.json(400, {error:'obj do not exists'});
-  }
-  res.json(200,{msg:'Ok'});
-});
+	Entity.findOne().where({
+		 idw : ent.id
+	}).exec(function (err, entity) {
+			if(err){
+				sails.log.error(err);
+				res.send(400);
+			} else {
+					if (entity){
+						console.log('=^^=|_');
+						sails.log.debug(entity);
+						Entity.destroy(entity)
+					 .exec(function (err){
+						if (err) {
+							res.json(400, {error:'obj do not exists'});
+						}
+						res.json(200,{msg:'Ok'});
+					});
+					} else {
+							res.json(400, {error:'obj do not exists'});
+					}
+			}
+		});
+
 },
 
 /**

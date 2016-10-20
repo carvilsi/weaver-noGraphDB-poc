@@ -17,6 +17,7 @@ describe('EntityController', function() {
       request(sails.hooks.http.app)
         .post('/entity/create')
         .send({ id: 'Neo', key: 'Name', value: 'Mr Anderson' })
+        .expect(200)
         .end(function (err, result) {
           assert.equal(result.body.idw, 'Neo');
           assert.equal(result.body.attributes[0].value, 'Mr Anderson');
@@ -36,10 +37,16 @@ describe('EntityController', function() {
       request(sails.hooks.http.app)
         .post('/entity/update')
         .send({ id: 'Neo', key: 'Phone', value: '5555' })
-        .expect(200, done);
+        .expect(200)
+        .end(function (err, result) {
+          assert.equal(result.body.idw, 'Neo');
+          assert.equal(result.body.attributes[0].value, 'Mr Anderson');
+          assert.equal(result.body.attributes[1].value, '5555');
+          done();
+        });
     });
   });
-
+  //
   describe('#create()', function() {
     it('should creates another entity', function (done) {
       request(sails.hooks.http.app)
@@ -48,7 +55,7 @@ describe('EntityController', function() {
         .expect(200, done);
     });
   });
-
+  //
   describe('#delte()', function() {
     it('should deltes an entity', function (done) {
       request(sails.hooks.http.app)
@@ -57,7 +64,7 @@ describe('EntityController', function() {
         .expect(200, done);
     });
   });
-
+  //
   describe('#create()', function() {
     it('should creates another entity', function (done) {
       request(sails.hooks.http.app)
@@ -99,5 +106,35 @@ describe('EntityController', function() {
         });
     });
   });
+
+  describe('#read()', function() {
+    it('should reads an entity with default eagerness = 0', function (done) {
+      request(sails.hooks.http.app)
+        .post('/entity/read')
+        .send({ id: 'Trinity'})
+        .expect(200)
+        .end(function (err, result) {
+          assert.equal(result.body.idw, 'Trinity');
+          assert.equal(result.body.attributes[0].value, 'The Trinity');
+          assert.equal(result.body.relations, null);
+          done();
+        });
+    });
+    it('should reads an entity with eagerness = 1', function (done) {
+      request(sails.hooks.http.app)
+        .post('/entity/read')
+        .send({ id: 'Neo', e: 1})
+        .expect(200)
+        .end(function (err, result) {
+          console.log(result.body);
+          assert.equal(result.body.idw, 'Neo');
+          assert.equal(result.body.attributes[0].value, 'Mr Anderson');
+          assert.equal(result.body.attributes[1].key, 'Phone');
+          assert.equal(result.body.relations[0].relation, 'Loves so much');
+          done();
+        });
+    });
+  });
+
 
 });
