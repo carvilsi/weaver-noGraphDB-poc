@@ -142,31 +142,53 @@ read: function(req, res){
 		// eagerness 1
 		Entity.findOne().where({
 			 idw: req.param('id')
-		}).populate('attributes').populate('relations').exec(function (err, enty) {
+		}).populate('attributes')
+		.populate('relations')
+		.exec(function (err, enty) {
 				if(err){
 					sails.log.error(err);
 					res.send(400);
 				} else {
 						if (enty){
 							var v = req.param('v');
-							if (enty.relations && v != 0) {
+							sails.log.debug(v);
+							if (enty.relations && v && v != 0) {
+								async = require('async');
 								sails.log.debug(enty.relations.length);
-								for (var i = 0; i < enty.relations.length; i++) {
+								var arrRel = new Array();
+								// var arrRel = new Array(enty.relations.length);
+								async.each(enty.relations, function (relation, cb) {
+									sails.log.debug(relation);
 									Relation.findOne().where({
-										 id:enty.relations[i].id
+										 id:relation.id
 									}).populateAll().exec(function (err, rel) {
 											if(err){
 												sails.log.error(err);
 												res.send(400);
 											} else {
 													if (rel){
-														 sails.log.debug(rel);
+  													sails.log.debug(rel);
+														sails.log.debug(enty);
+														arrRel.push(rel);
+														cb();
 													}
 											}
 										});
-								}
+								}, function (err) {
+									if (err) {
+										sails.log.error(err);
+										res.send(400);
+									} else {
+										sails.log.debug(arrRel);
+										var lol = enty.toObject();
+										lol.relations = arrRel;
+										res.json(200, lol);
+									}
+								});
+							} else {
+								sails.log.debug(enty);
+								res.json(200, enty);
 							}
-							res.json(200, enty);
 						} else {
 								res.json(400, {error:'obj do not exists'});
 						}
@@ -195,7 +217,6 @@ delete: function(req, res) {
 				res.send(400);
 			} else {
 					if (entity){
-						console.log('=^^=|_');
 						sails.log.debug(entity);
 						Entity.destroy(entity)
 					 .exec(function (err){
@@ -236,7 +257,7 @@ relate: function(req,res){
 						 target: target
 					 }).exec(function(err,relation){
 						 if (err) {
-							 sails.log.error(err);
+							sails.log.error(err);
 			 				res.send(400);
 						} else {
 							source.relations.add(relation);
@@ -259,8 +280,6 @@ relate: function(req,res){
 							}
 					}
 			}
-
-			// }
 		});
 }
 };

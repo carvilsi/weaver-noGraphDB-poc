@@ -11,6 +11,7 @@ before(function(done) {
 
 
     // configuration for testing purposes
+    // sails.config.models.migrate = 'drop';
 
   }, function(err, server) {
     if (err) return done(err);

@@ -85,6 +85,16 @@ describe('EntityController', function() {
           done();
         });
     });
+    it('should relates two another entities', function (done) {
+      request(sails.hooks.http.app)
+        .post('/entity/relate')
+        .send({ source: 'Neo', target: 'Smith', relation: 'Fights' })
+        .end(function (err, result) {
+          assert.equal(result.body.idw, 'Neo');
+          assert.equal(result.body.relations[1].relation, 'Fights');
+          done();
+        });
+    });
     it('should fails relates when target does not exits', function (done) {
       request(sails.hooks.http.app)
         .post('/entity/relate')
@@ -131,6 +141,25 @@ describe('EntityController', function() {
           assert.equal(result.body.attributes[0].value, 'Mr Anderson');
           assert.equal(result.body.attributes[1].key, 'Phone');
           assert.equal(result.body.relations[0].relation, 'Loves so much');
+          done();
+        });
+    });
+    it('should reads an entity with eagerness = 1 and verbose (populate the relations)', function (done) {
+      request(sails.hooks.http.app)
+        .post('/entity/read')
+        .send({ id: 'Neo', e: 1, v: 1})
+        .expect(200)
+        .end(function (err, result) {
+          console.log(result.body);
+          assert.equal(result.body.idw, 'Neo');
+          assert.equal(result.body.attributes[0].value, 'Mr Anderson');
+          assert.equal(result.body.attributes[1].key, 'Phone');
+          assert.equal(result.body.relations[1].relation, 'Loves so much');
+          assert.equal(result.body.relations[0].relation, 'Fights');
+          assert.equal(result.body.relations[1].target.idw, 'Trinity');
+          assert.equal(result.body.relations[0].source.idw, 'Neo');
+          assert.equal(result.body.relations[0].target.idw, 'Smith');
+          assert.equal(result.body.relations[0].source.idw, 'Neo');
           done();
         });
     });
