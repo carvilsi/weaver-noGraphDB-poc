@@ -218,7 +218,7 @@ delete: function(req, res) {
 			} else {
 					if (entity){
 						sails.log.debug(entity);
-						Entity.destroy(entity)
+						Entity.destroy(entity.id)
 					 .exec(function (err){
 						if (err) {
 							res.json(400, {error:'obj do not exists'});
