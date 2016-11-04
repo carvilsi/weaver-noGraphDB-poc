@@ -32,9 +32,9 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {
-    view: 'homepage'
-  }
+  // '/': {
+  //   view: 'homepage'
+  // },
 
   /***************************************************************************
   *                                                                          *
@@ -45,5 +45,59 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
+
+  'post /entity': {
+        controller: 'EntityController',
+        action: 'create',
+        skipAssets: 'true',
+        //swagger path object
+        swagger: {
+            methods: ['POST'],
+            summary: ' Create an Entity',
+            description: 'Get Groups Description',
+            produces: [
+                'application/json'
+            ],
+            tags: [
+                'Entity'
+            ],
+            responses: {
+                '200': {
+                    description: 'Create an Entity',
+                    schema: 'Entity'
+                }
+            },
+            parameters: [
+
+            ]
+
+        }
+    },
+
+  'get /entity': {
+        controller: 'EntityController',
+        action: 'read',
+        skipAssets: 'false',
+        //swagger path object
+        swagger: {
+            methods: ['GET'],
+            summary: ' Reads an Entity',
+            description: 'Get Groups Description',
+            produces: [
+                'application/json'
+            ],
+            tags: [
+                'Entity'
+            ],
+            responses: {
+                '200': {
+                    description: 'Create an Entity',
+                    schema: 'Entity'
+                }
+            },
+            parameters: ['source']
+
+        }
+    }
 
 };

@@ -57,11 +57,12 @@ module.exports = {
 										res.json(400,{error:err});
 									} else {
 										entity.attributes.add(obj);
-										entity.save(function(err,newEntity) {
+										entity.save(function(err) {
+										// entity.save(function(err,newEntity) {
 											if (err) {
 												res.json(400);
 											} else {
-												res.json(200,newEntity);
+												res.json(200,entity);
 											}
 										});
 									}
@@ -98,11 +99,12 @@ module.exports = {
 						} else {
 								if (enty){
 									 enty.attributes.add(obj.id);
-									 enty.save(function (err, newEntity) {
+									 enty.save(function (err) {
+									//  enty.save(function (err, newEntity) {
 									 		if (err) {
 									 			res.json(400);
 									 		} else {
-									 			res.json(200,newEntity);
+									 			res.json(200,enty);
 									 		}
 									 });
 								} else {
@@ -261,12 +263,12 @@ relate: function(req,res){
 			 				res.send(400);
 						} else {
 							source.relations.add(relation);
-							source.save(function(err, newEntity){
+							source.save(function(err){
 									if (err) {
 										sails.log.error(err);
 										res.send(400);
 									} else {
-										res.json(200,newEntity);
+										res.json(200,source);
 									}
 							});
 						}

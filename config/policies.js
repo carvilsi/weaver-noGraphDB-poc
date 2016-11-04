@@ -26,7 +26,7 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  // '*': true,
+  '*': true,
 
   /***************************************************************************
   *                                                                          *
@@ -48,4 +48,26 @@ module.exports.policies = {
 		// before letting any users feed our rabbits
 		// feed : ['isNiceToAnimals', 'hasRabbitFood']
 	// }
+
+  AttributeController: {
+    '*':false
+  },
+
+  RelationController: {
+    '*':false
+  },
+
+  EntityController: {
+    find: false,
+    findOne: false,
+    remove: false,
+    add: false,
+    populate: false,
+    create: true,
+    update: true,
+    delete: true,
+    relate: true,
+    read: true
+  }
+
 };

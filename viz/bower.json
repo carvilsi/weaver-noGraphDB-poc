@@ -1,0 +1,22 @@
+{
+  "name": "weaver-viz-poc",
+  "authors": [
+    "carvilsi <carvilsi.mail.list@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "vis": "^4.16.1",
+    "jquery": "^3.1.1",
+    "bootstrap": "^3.3.7"
+  }
+}
